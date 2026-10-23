@@ -22,4 +22,4 @@ As ferramentas são de seus respectivos autores. Este repositório contém apena
 
 ---
 
-Feito por [@nando_garcia.ia](https://www.instagram.com/nando_garcia.ia/)
+Feito por [@nandogarcia.ia](https://www.instagram.com/nandogarcia.ia/)
