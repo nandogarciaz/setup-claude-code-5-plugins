@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5 plugins pro Claude Code · Guia de instalação</title>
+<meta name="description" content="Passo a passo para instalar e usar Claude Code Setup, Claude-Mem, Headroom, Task Observer e OmniRoute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fundo: #FAFAF7;
+    --sup: #FFFFFF;
+    --tinta: #141413;
+    --tinta2: #5E5D59;
+    --tinta3: #A8A6A0;
+    --linha: #E8E6E1;
+    --laranja: #E8622C;
+    --laranja-texto: #B8481C;
+    --laranja-claro: #FDEDE5;
+    --indigo: #4048D6;
+    --indigo-claro: #ECEDFB;
+    --alerta: #9A5B00;
+    --alerta-claro: #FFF5E0;
+    --codigo: #18181B;
+    --codigo-texto: #F4F4F5;
+    --sombra: 0 20px 40px -24px rgba(20, 20, 40, 0.18), 0 6px 14px -8px rgba(20, 20, 40, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fundo: #121211;
+      --sup: #1C1C1A;
+      --tinta: #F2F1EC;
+      --tinta2: #B4B2AA;
+      --tinta3: #6E6C66;
+      --linha: #2D2C29;
+      --laranja-texto: #F2895C;
+      --laranja-claro: #3A2117;
+      --indigo: #7C83F0;
+      --indigo-claro: #22244A;
+      --alerta: #F0C26B;
+      --alerta-claro: #33280F;
+      --codigo: #0B0B0C;
+      --sombra: 0 20px 40px -24px rgba(0, 0, 0, 0.6);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--tinta);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--indigo); text-underline-offset: 3px; }
+  .serif { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; color: var(--laranja); letter-spacing: 0; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* topo */
+  header.hero { padding: 72px 0 40px; text-align: center; }
+  .tag { display: inline-flex; align-items: center; gap: 8px; font-family: "JetBrains Mono", monospace; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--tinta2); }
+  .tag::before { content: ""; width: 8px; height: 8px; border-radius: 4px; background: var(--laranja); box-shadow: 0 0 0 5px var(--laranja-claro); }
+  h1 { font-size: clamp(40px, 8vw, 64px); line-height: 1.02; letter-spacing: -0.04em; font-weight: 800; margin: 18px 0 16px; }
+  h1 .serif { display: block; font-size: 1.05em; }
+  .lead { color: var(--tinta2); font-size: 19px; max-width: 560px; margin: 0 auto; }
+
+  /* índice */
+  nav.indice { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 36px 0 0; }
+  nav.indice a { display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center; text-decoration: none; color: var(--tinta); background: var(--sup); border: 1px solid var(--linha); border-radius: 18px; padding: 16px 10px; font-weight: 600; font-size: 14px; transition: transform .15s, box-shadow .15s; }
+  nav.indice a:hover { transform: translateY(-2px); box-shadow: var(--sombra); }
+
+  /* ícones */
+  .icone { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; background: var(--indigo); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), inset 0 -6px 14px rgba(0,0,0,.14), 0 12px 24px -12px var(--indigo); flex-shrink: 0; }
+  .icone.claude { background: var(--laranja); box-shadow: inset 0 2px 0 rgba(255,255,255,.28), inset 0 -6px 14px rgba(0,0,0,.14), 0 12px 24px -12px var(--laranja); }
+  .icone svg { width: 28px; height: 28px; stroke: #fff; stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .icone.g { width: 72px; height: 72px; border-radius: 20px; }
+  .icone.g svg { width: 38px; height: 38px; }
+
+  /* blocos */
+  section { margin: 56px 0; }
+  .card { background: var(--sup); border: 1px solid var(--linha); border-radius: 28px; padding: 32px; box-shadow: var(--sombra); }
+  .cab { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+  .num { font-family: "JetBrains Mono", monospace; font-size: 13px; letter-spacing: 2px; color: var(--tinta2); }
+  h2 { font-size: clamp(28px, 5vw, 36px); line-height: 1.1; letter-spacing: -0.03em; margin: 2px 0 0; font-weight: 800; }
+  h3 { font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--tinta2); margin: 28px 0 10px; font-family: "JetBrains Mono", monospace; font-weight: 500; }
+  .resumo { font-size: 18px; margin: 0 0 6px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-family: "JetBrains Mono", monospace; font-size: 13px; padding: 6px 12px; border-radius: 10px; background: var(--indigo-claro); color: var(--indigo); text-decoration: none; }
+  .chip.neutro { background: transparent; border: 1px solid var(--linha); color: var(--tinta2); }
+  .chip.laranja { background: var(--laranja-claro); color: var(--laranja-texto); }
+
+  ol.passos { list-style: none; counter-reset: p; padding: 0; margin: 0; }
+  ol.passos > li { counter-increment: p; position: relative; padding: 0 0 18px 48px; }
+  ol.passos > li::before { content: counter(p); position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 10px; background: var(--indigo-claro); color: var(--indigo); font-weight: 700; font-size: 15px; display: grid; place-items: center; }
+  ol.passos > li:last-child { padding-bottom: 0; }
+  ul.lista { padding-left: 20px; margin: 0; }
+  ul.lista li { margin-bottom: 6px; }
+
+  /* código */
+  .cmd { position: relative; margin: 10px 0 4px; }
+  .cmd pre { margin: 0; background: var(--codigo); color: var(--codigo-texto); border-radius: 14px; padding: 16px 92px 16px 18px; overflow-x: auto; font-family: "JetBrains Mono", monospace; font-size: 14.5px; line-height: 1.55; }
+  .cmd .rotulo { position: absolute; top: -9px; left: 14px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; background: var(--laranja); color: #fff; padding: 2px 8px; border-radius: 6px; }
+  .cmd button { position: absolute; top: 10px; right: 10px; font: 600 13px Inter, sans-serif; color: var(--codigo-texto); background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 9px; padding: 6px 12px; cursor: pointer; }
+  .cmd button:hover { background: rgba(255,255,255,.18); }
+  .cmd button.ok { background: var(--indigo); border-color: var(--indigo); }
+  code { font-family: "JetBrains Mono", monospace; font-size: .88em; background: var(--indigo-claro); color: var(--indigo); padding: 1px 6px; border-radius: 6px; }
+
+  .nota { margin-top: 20px; border-radius: 16px; padding: 14px 18px; background: var(--indigo-claro); font-size: 15.5px; }
+  .nota.alerta { background: var(--alerta-claro); color: var(--alerta); }
+  .nota strong { display: block; margin-bottom: 2px; }
+
+  details { margin-top: 18px; border: 1px solid var(--linha); border-radius: 16px; padding: 12px 18px; }
+  summary { cursor: pointer; font-weight: 600; }
+
+  /* pré-requisitos */
+  .req { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+  .req div { border: 1px solid var(--linha); border-radius: 16px; padding: 14px 16px; background: var(--fundo); }
+  .req b { display: block; }
+  .req span { color: var(--tinta2); font-size: 15px; }
+
+  footer { text-align: center; padding: 40px 0 72px; color: var(--tinta2); font-size: 15px; }
+  .assinatura { display: inline-block; font-family: "JetBrains Mono", monospace; color: var(--tinta); border: 1px solid var(--linha); background: var(--sup); padding: 8px 18px; border-radius: 999px; margin-top: 12px; text-decoration: none; }
+
+  @media (max-width: 560px) {
+    header.hero { padding-top: 48px; }
+    .card { padding: 22px 18px; border-radius: 22px; }
+    .cab { gap: 14px; }
+    .icone.g { width: 60px; height: 60px; }
+    ol.passos > li { padding-left: 42px; }
+    .cmd pre { font-size: 13.5px; padding-right: 18px; padding-top: 44px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="tag">Guia gratuito · @nandogarcia.ia</div>
+  <h1>5 plugins <span class="serif">pra potencializar o seu Claude Code</span></h1>
+  <p class="lead">O passo a passo pra instalar e começar a usar cada ferramenta do vídeo. Copie os comandos e cole no terminal ou no Claude Code.</p>
+  <nav class="indice" aria-label="Plugins">
+    <a href="#setup"><span class="icone"><svg viewBox="0 0 32 32"><path d="M6 26L18 14"/><path d="M22 4v8M18 8h8"/><path d="M10 5v4M8 7h4"/><path d="M26 18v4M24 20h4"/></svg></span>Claude Code Setup</a>
+    <a href="#mem"><span class="icone"><svg viewBox="0 0 32 32"><path d="M7.5 18.5A9 9 0 1 0 10 9.6"/><path d="M6 5v6h6"/><path d="M16 11v5.5l3.5 2.5"/></svg></span>Claude-Mem</a>
+    <a href="#headroom"><span class="icone"><svg viewBox="0 0 32 32"><path d="M5 7h22l-8 10v7l-6 3V17z"/></svg></span>Headroom</a>
+    <a href="#observer"><span class="icone"><svg viewBox="0 0 32 32"><path d="M3 17s5-8 13-8 13 8 13 8-5 8-13 8S3 17 3 17z"/><circle cx="16" cy="17" r="3.5" fill="#fff" stroke="none"/><path d="M26 3v4M24 5h4"/></svg></span>Task Observer</a>
+    <a href="#omni"><span class="icone"><svg viewBox="0 0 32 32"><path d="M4 16h8"/><path d="M12 16c4 0 4-8 9-8h6M12 16h15M12 16c4 0 4 8 9 8h6"/><path d="M24 5l3 3-3 3M24 13l3 3-3 3M24 21l3 3-3 3"/></svg></span>OmniRoute</a>
+  </nav>
+</header>
+
+<!-- ANTES DE COMEÇAR -->
+<section id="antes">
+  <div class="card">
+    <div class="cab">
+      <span class="icone claude g"><svg viewBox="0 0 32 32"><rect x="3" y="6" width="26" height="20" rx="4"/><path d="M9 13l4 3-4 3M16 20h7"/></svg></span>
+      <div><div class="num">ANTES DE COMEÇAR</div><h2>O que você precisa</h2></div>
+    </div>
+    <p class="resumo">Todos os plugins funcionam em cima do Claude Code. Confira se você já tem o básico instalado:</p>
+    <div class="req">
+      <div><b>Claude Code atualizado</b><span>Com suporte a plugins. Rode <code>claude update</code> se estiver numa versão antiga.</span></div>
+      <div><b>Node.js 20 ou superior</b><span>Usado pelo Claude-Mem, Task Observer e OmniRoute.</span></div>
+      <div><b>Python 3.10 ou superior</b><span>Só para o Headroom.</span></div>
+    </div>
+    <div class="nota">
+      <strong>Onde digitar cada comando</strong>
+      Os comandos que começam com <code>/</code> são digitados dentro do Claude Code. Os outros vão no terminal do seu computador.
+    </div>
+  </div>
+</section>
+
+<!-- 1 · SETUP -->
+<section id="setup">
+  <div class="card">
+    <div class="cab">
+      <span class="icone g"><svg viewBox="0 0 32 32"><path d="M6 26L18 14"/><path d="M22 4v8M18 8h8"/><path d="M10 5v4M8 7h4"/><path d="M26 18v4M24 20h4"/></svg></span>
+      <div><div class="num">PLUGIN 01 / 05</div><h2>Claude Code <span class="serif">Setup</span></h2></div>
+    </div>
+    <p class="resumo">Plugin oficial da Anthropic que analisa o seu projeto e recomenda o que vale configurar: servidores MCP, skills, hooks, subagentes e comandos. Ele só lê e sugere, não altera nenhum arquivo.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener">Marketplace oficial ↗</a>
+      <span class="chip neutro">Gratuito</span>
+    </div>
+
+    <h3>Como instalar</h3>
+    <ol class="passos">
+      <li>Abra o terminal na pasta do seu projeto e inicie o Claude Code.
+        <div class="cmd"><span class="rotulo">terminal</span><pre>claude</pre><button>Copiar</button></div>
+      </li>
+      <li>Dentro do Claude Code, rode o comando de instalação. Ele abre os detalhes do plugin.
+        <div class="cmd"><span class="rotulo">claude code</span><pre>/plugin install claude-code-setup@claude-plugins-official</pre><button>Copiar</button></div>
+      </li>
+      <li>Escolha o escopo: só para você em todos os projetos, para todo mundo do repositório, ou só para você neste projeto. Se aparecer o aviso pedindo recarregar, rode <code>/reload-plugins</code>.</li>
+    </ol>
+
+    <h3>Como usar</h3>
+    <ol class="passos">
+      <li>Peça a análise em linguagem natural:
+        <div class="cmd"><span class="rotulo">claude code</span><pre>Recomende automações para este projeto</pre><button>Copiar</button></div>
+      </li>
+      <li>Ele mostra as melhores sugestões por categoria. Para ver mais opções de uma categoria, peça só ela, por exemplo: "quais hooks você recomenda?".</li>
+      <li>Escolha o que faz sentido e peça para o Claude configurar. Nada é instalado sem você pedir.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 2 · CLAUDE-MEM -->
+<section id="mem">
+  <div class="card">
+    <div class="cab">
+      <span class="icone g"><svg viewBox="0 0 32 32"><path d="M7.5 18.5A9 9 0 1 0 10 9.6"/><path d="M6 5v6h6"/><path d="M16 11v5.5l3.5 2.5"/></svg></span>
+      <div><div class="num">PLUGIN 02 / 05</div><h2>Claude-<span class="serif">Mem</span></h2></div>
+    </div>
+    <p class="resumo">Memória entre sessões. Registra automaticamente o que acontece em cada sessão, resume e guarda tudo localmente. Na sessão seguinte, traz de volta o contexto que importa.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">github.com/thedotmack/claude-mem ↗</a>
+      <span class="chip neutro">Código aberto</span>
+    </div>
+
+    <h3>Como instalar</h3>
+    <ol class="passos">
+      <li>Dentro do Claude Code, adicione o marketplace do projeto:
+        <div class="cmd"><span class="rotulo">claude code</span><pre>/plugin marketplace add thedotmack/claude-mem</pre><button>Copiar</button></div>
+      </li>
+      <li>Instale o plugin:
+        <div class="cmd"><span class="rotulo">claude code</span><pre>/plugin install claude-mem</pre><button>Copiar</button></div>
+      </li>
+      <li>Feche e abra o Claude Code de novo. A partir daí, o contexto das sessões anteriores aparece sozinho nas novas.</li>
+    </ol>
+    <details>
+      <summary>Prefere instalar pelo terminal?</summary>
+      <div class="cmd"><span class="rotulo">terminal</span><pre>npx claude-mem install</pre><button>Copiar</button></div>
+      <p>Não use <code>npm install -g claude-mem</code>: esse comando instala só a biblioteca e não ativa a memória no Claude Code.</p>
+    </details>
+
+    <h3>Dicas de uso</h3>
+    <ul class="lista">
+      <li>Tudo fica salvo no seu computador, na pasta <code>~/.claude-mem/</code>.</li>
+      <li>Quer que algo não seja guardado? Coloque o trecho entre as tags <code>&lt;private&gt;</code> e <code>&lt;/private&gt;</code>.</li>
+      <li>No Windows, se a memória não funcionar, rode <code>npx claude-mem doctor</code> para diagnosticar.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3 · HEADROOM -->
+<section id="headroom">
+  <div class="card">
+    <div class="cab">
+      <span class="icone g"><svg viewBox="0 0 32 32"><path d="M5 7h22l-8 10v7l-6 3V17z"/></svg></span>
+      <div><div class="num">PLUGIN 03 / 05</div><h2>Head<span class="serif">room</span></h2></div>
+    </div>
+    <p class="resumo">Um funil de contexto. Fica entre o Claude Code e o modelo e enxuga logs, JSON e saídas de ferramentas antes do envio, mantendo o que importa, como os erros. Resultado: menos tokens e mais espaço na janela de contexto.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener">github.com/headroomlabs-ai/headroom ↗</a>
+      <span class="chip neutro">Código aberto</span>
+    </div>
+
+    <h3>Como instalar</h3>
+    <ol class="passos">
+      <li>No terminal, instale a ferramenta. Se você usa o <code>uv</code>, este é o jeito mais limpo:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>uv tool install --python 3.13 "headroom-ai[all]"</pre><button>Copiar</button></div>
+        Sem o <code>uv</code>, use o pip:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>pip install "headroom-ai[all]"</pre><button>Copiar</button></div>
+      </li>
+    </ol>
+
+    <h3>Como usar</h3>
+    <ol class="passos">
+      <li>Em vez de abrir o Claude Code com <code>claude</code>, abra pelo Headroom:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>headroom wrap claude</pre><button>Copiar</button></div>
+      </li>
+      <li>Use o Claude Code normalmente. O Headroom comprime o contexto no caminho, e o original fica guardado localmente caso o modelo precise dele.</li>
+    </ol>
+    <div class="nota">
+      <strong>Quanto economiza?</strong>
+      Depende do tipo de conteúdo: logs e JSON repetitivos rendem bem mais que código. Teste no seu dia a dia antes de contar com um número.
+    </div>
+  </div>
+</section>
+
+<!-- 4 · TASK OBSERVER -->
+<section id="observer">
+  <div class="card">
+    <div class="cab">
+      <span class="icone g"><svg viewBox="0 0 32 32"><path d="M3 17s5-8 13-8 13 8 13 8-5 8-13 8S3 17 3 17z"/><circle cx="16" cy="17" r="3.5" fill="#fff" stroke="none"/><path d="M26 3v4M24 5h4"/></svg></span>
+      <div><div class="num">PLUGIN 04 / 05</div><h2>Task <span class="serif">Observer</span></h2></div>
+    </div>
+    <p class="resumo">Uma skill que observa como você trabalha. Quando percebe que você corrige a mesma coisa várias vezes, anota e sugere uma melhoria na skill certa. Nada é instalado sozinho: você revisa e aprova.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/rebelytics/one-skill-to-rule-them-all" target="_blank" rel="noopener">github.com/rebelytics/one-skill-to-rule-them-all ↗</a>
+      <a class="chip neutro" href="https://tessl.io/registry/rebelytics/task-observer" target="_blank" rel="noopener">Guia do autor ↗</a>
+    </div>
+
+    <h3>Como instalar</h3>
+    <ol class="passos">
+      <li>No terminal, dentro da pasta do projeto, instale a skill:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>npx skills add rebelytics/one-skill-to-rule-them-all --skill task-observer</pre><button>Copiar</button></div>
+        Para valer em todos os projetos, adicione <code>-g</code> no fim do comando.
+      </li>
+      <li>Ative a skill no início de cada sessão. Abra o arquivo <code>references/environments.md</code> que veio com a skill, copie o bloco de ativação para Claude Code e cole no <code>CLAUDE.md</code> do seu projeto, preenchendo os caminhos indicados.</li>
+      <li>Abra uma sessão nova no Claude Code e trabalhe normalmente.</li>
+    </ol>
+    <div class="nota">
+      <strong>Como saber se está funcionando</strong>
+      Depois de algumas sessões, deve aparecer a pasta <code>skill-observations/observation-log/</code>. As sugestões de melhoria ficam em <code>skill-updates/</code>, esperando a sua revisão.
+    </div>
+  </div>
+</section>
+
+<!-- 5 · OMNIROUTE -->
+<section id="omni">
+  <div class="card">
+    <div class="cab">
+      <span class="icone g"><svg viewBox="0 0 32 32"><path d="M4 16h8"/><path d="M12 16c4 0 4-8 9-8h6M12 16h15M12 16c4 0 4 8 9 8h6"/><path d="M24 5l3 3-3 3M24 13l3 3-3 3M24 21l3 3-3 3"/></svg></span>
+      <div><div class="num">PLUGIN 05 / 05</div><h2>Omni<span class="serif">Route</span></h2></div>
+    </div>
+    <p class="resumo">Um gateway de IA que roda na sua máquina. Você conecta vários provedores pelas suas chaves de API, vários com plano gratuito, e aponta o Claude Code pra ele. Quando um provedor bate o limite, ele troca sozinho pro próximo da fila.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noopener">github.com/diegosouzapw/OmniRoute ↗</a>
+      <span class="chip neutro">Código aberto</span>
+    </div>
+
+    <h3>Como instalar</h3>
+    <ol class="passos">
+      <li>No terminal, instale e inicie o OmniRoute:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>npm install -g omniroute
+omniroute</pre><button>Copiar</button></div>
+      </li>
+      <li>Abra o painel no navegador:
+        <div class="cmd"><span class="rotulo">navegador</span><pre>http://localhost:20128</pre><button>Copiar</button></div>
+      </li>
+      <li>No painel, conecte os provedores que você vai usar com a sua conta ou chave de API de cada um. A ordem da fila define quem é chamado primeiro.</li>
+    </ol>
+    <details>
+      <summary>Prefere usar Docker?</summary>
+      <div class="cmd"><span class="rotulo">terminal</span><pre>docker run -d --name omniroute --restart unless-stopped \
+  -p 127.0.0.1:20128:20128 -v omniroute-data:/app/data \
+  diegosouzapw/omniroute:latest</pre><button>Copiar</button></div>
+    </details>
+
+    <h3>Como ligar no Claude Code</h3>
+    <ol class="passos">
+      <li>Rode o configurador e escolha o modelo na lista:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>omniroute configure claude</pre><button>Copiar</button></div>
+      </li>
+      <li>Ou abra o Claude Code direto pelo OmniRoute, sem mexer em configuração nenhuma, trocando o modelo pelo que você conectou:
+        <div class="cmd"><span class="rotulo">terminal</span><pre>omniroute run claude --model provedor/modelo</pre><button>Copiar</button></div>
+      </li>
+    </ol>
+    <div class="nota alerta">
+      <strong>Antes de usar, leia isto</strong>
+      Cada provedor tem as suas regras e limites no plano gratuito, e alguns não permitem uso por ferramentas de terceiros. Confira os termos de uso de cada um antes de conectar. Suas chaves ficam na sua máquina: mantenha o OmniRoute atualizado e não exponha a porta 20128 na internet.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Gostou? Salva este guia e acompanha mais conteúdo sobre IA na prática.</p>
+  <a class="assinatura" href="https://www.instagram.com/nandogarcia.ia/" target="_blank" rel="noopener">@nandogarcia.ia</a>
+  <p style="font-size:13px;margin-top:20px;">Comandos conferidos na documentação oficial de cada projeto em outubro de 2026. As ferramentas mudam rápido: em caso de dúvida, consulte o link oficial.</p>
+</footer>
+
+</div>
+<script>
+  document.querySelectorAll('.cmd button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var txt = b.parentElement.querySelector('pre').innerText;
+      var feito = function () {
+        b.textContent = 'Copiado';
+        b.classList.add('ok');
+        setTimeout(function () { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1600);
+      };
+      try {
+        navigator.clipboard.writeText(txt).then(feito, function () { fallback(txt); feito(); });
+      } catch (e) { fallback(txt); feito(); }
+    });
+  });
+  function fallback(t) {
+    var a = document.createElement('textarea');
+    a.value = t; document.body.appendChild(a); a.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    a.remove();
+  }
+</script>
+</body>
+</html>
